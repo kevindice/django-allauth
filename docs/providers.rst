@@ -178,6 +178,23 @@ Development callback URL
     http://localhost:8000/accounts/box/login/callback/
 
 
+CILogon
+-------
+
+App registration (get your key and secret here)
+    https://cilogon.org/oauth2/register
+
+Development callback URL
+    https://localhost/accounts/cilogon/login/callback/
+
+Note: CILogon requires all callback URLs to be secure (https), even those pointing
+to localhost.  For development purposes, this can usually be done with a
+self-signed certificate and reverse proxy.
+
+Documentation is available here
+    http://www.cilogon.org/oidc
+
+
 Dataporten
 ----------
 
