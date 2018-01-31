@@ -15,10 +15,8 @@ class CILogonProvider(OAuth2Provider):
 
     def get_default_scope(self):
         scope = ['profile']
-        if app_settings.CILOGON_QUERY_EMAIL:
+        if app_settings.QUERY_EMAIL:
             scope.append('email')
-        if app_settings.CILOGON_QUERY_USERINFO:
-            scope.append('org.cilogon.userinfo')
         return scope
 
 
