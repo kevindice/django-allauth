@@ -20,10 +20,10 @@ class CILogonOAuth2Adapter(OAuth2Adapter):
     userinfo_url = '{0}/oauth2/email'.format(provider_base_url)
 
     def complete_login(self, request, app, token, **kwargs):
-        response = requests.get(
-            self.profile_url,
-            params={'code': token})
-        extra_data = response.json()
+        #response = requests.get(
+        #    self.profile_url,
+        #    params={'a': token})
+        #extra_data = response.json()
         
         return self.get_provider().sociallogin_from_response(
             request, extra_data
