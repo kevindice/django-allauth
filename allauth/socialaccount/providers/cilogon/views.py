@@ -14,7 +14,7 @@ class CILogonOAuth2Adapter(OAuth2Adapter):
     provider_base_url = 'https://cilogon.org'
     
     access_token_url = '{0}/oauth2/token'.format(provider_base_url)
-    authorize_url = '{0}/authorize'.format(provider_base_url)
+    authorize_url = '{0}/authorize/'.format(provider_base_url)
     profile_url = '{0}/oauth2/profile'.format(provider_base_url)
     email_url = '{0}/oauth2/email'.format(provider_base_url)
     userinfo_url = '{0}/oauth2/email'.format(provider_base_url)
