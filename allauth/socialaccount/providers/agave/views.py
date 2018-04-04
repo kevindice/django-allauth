@@ -23,6 +23,8 @@ class AgaveAdapter(OAuth2Adapter):
     def complete_login(self, request, app, token, response):
         extra_data = requests.get(self.profile_url, params={
             'access_token': token.token
+        }, headers={
+            'Authorization': 'Bearer ' + token.token,
         })
 
         return self.get_provider().sociallogin_from_response(
