@@ -4,16 +4,15 @@ from allauth.socialaccount.providers.oauth2.provider import OAuth2Provider
 
 class AgaveAccount(ProviderAccount):
 
-    def extract_uid(self, data):
-        print(data)
-        return data['id']
+    def get_profile_url(self):
+        return self.account.extra_data.get('web_url', 'dflt')
 
-    def extract_common_fields(self, data):
-        pass
+    def get_avatar_url(self):
+        return self.account.extra_data.get('avatar_url', 'dflt')
 
     def to_str(self):
         dflt = super(AgaveAccount, self).to_str()
-        return dflt
+        return self.account.extra_data.get('name', dflt)
 
 
 class AgaveProvider(OAuth2Provider):
@@ -21,8 +20,15 @@ class AgaveProvider(OAuth2Provider):
     name = 'Agave'
     account_class = AgaveAccount
 
-    def get_default_scope(self):
-        return ['PRODUCTION']
+    def extract_uid(self, data):
+        return str(data['id'])
+
+    def extract_common_fields(self, data):
+        return dict(
+            email=data.get('email'),
+            username=data.get('username'),
+            name=data.get('name'),
+        )
 
 
 provider_classes = [AgaveProvider]

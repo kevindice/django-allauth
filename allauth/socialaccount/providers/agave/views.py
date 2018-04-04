@@ -1,35 +1,35 @@
 import requests
 
-from allauth.socialaccount.providers.oauth.views import (
+from allauth.socialaccount import app_settings
+from allauth.socialaccount.providers.agave.provider import AgaveProvider
+from allauth.socialaccount.providers.oauth2.views import (
     OAuth2Adapter,
     OAuth2CallbackView,
     OAuth2LoginView,
 )
 
-from .provider import AgaveProvider
 
-class AgaveOAuth2Adapter(OAuth2Adapter):
+class AgaveAdapter(OAuth2Adapter):
     provider_id = AgaveProvider.id
-    access_token_url = 'https://public.agaveapi.co/token'
-    authorize_url = 'https://public.agaveapi.co/authorize'
-    profile_url = 'https://public.agaveapi.co/profiles/v2/'
+    provider_default_url = 'https://public.agaveapi.co/'
+    provider_api_version = 'v2'
 
-    def complete_login(self, request, app, token, **kwargs):
-        print('response', kwargs['response'])
-        uid = kwargs['response'].get('user_id')
-        params = {
-            'access_token': token.token,
-        }
+    provider_base_url = 'https://public.agaveapi.co'
 
-        resp = requests.get(self.profile_url, params=params)
+    access_token_url = '{0}/token'.format(provider_base_url)
+    authorize_url = '{0}/authorize'.format(provider_base_url)
+    profile_url = '{0}/profiles/v2/'.format(provider_base_url)
 
-        resp.raise_for_status()
-        print('resp', resp.json())
-        extra_data = resp.json()['result'][0]
-        return self.get_provider().sociallogin_from_response(request, extra_data)
+    def complete_login(self, request, app, token, response):
+        extra_data = requests.get(self.profile_url, params={
+            'access_token': token.token
+        })
 
-oauth2_login = OAuth2LoginView.adapter_view(AgaveOAuth2Adapter)
-oauth2_callback = OAuth2CallbackView.adapter_view(AgaveOAuth2Adapter)
-        
+        return self.get_provider().sociallogin_from_response(
+            request,
+            extra_data.json()
+        )
 
 
+oauth2_login = OAuth2LoginView.adapter_view(AgaveAdapter)
+oauth2_callback = OAuth2CallbackView.adapter_view(AgaveAdapter)

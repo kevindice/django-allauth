@@ -12,10 +12,12 @@ urlpatterns = [url(r'^', include('allauth.account.urls'))]
 if app_settings.SOCIALACCOUNT_ENABLED:
     urlpatterns += [url(r'^social/', include('allauth.socialaccount.urls'))]
 
+print(providers.registry.get_list())
 for provider in providers.registry.get_list():
     try:
         prov_mod = import_module(provider.get_package() + '.urls')
-    except ImportError:
+    except ImportError as e:
+        print('ImportError', str(e))
         continue
     prov_urlpatterns = getattr(prov_mod, 'urlpatterns', None)
     if prov_urlpatterns:
