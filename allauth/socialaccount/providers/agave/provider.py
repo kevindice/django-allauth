@@ -21,7 +21,7 @@ class AgaveProvider(OAuth2Provider):
     account_class = AgaveAccount
 
     def extract_uid(self, data):
-        return str(data['id'])
+        return str(data.get('id', "5"))
 
     def extract_common_fields(self, data):
         return dict(
