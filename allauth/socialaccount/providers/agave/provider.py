@@ -30,5 +30,9 @@ class AgaveProvider(OAuth2Provider):
             name=data.get('name'),
         )
 
+    def get_default_scope(self):
+        scope = ['PRODUCTION']
+        return scope
+
 
 provider_classes = [AgaveProvider]
