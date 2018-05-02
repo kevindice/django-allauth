@@ -18,7 +18,7 @@ class AgaveAdapter(OAuth2Adapter):
 
     access_token_url = '{0}/token'.format(provider_base_url)
     authorize_url = '{0}/authorize'.format(provider_base_url)
-    profile_url = '{0}/profiles/v2/'.format(provider_base_url)
+    profile_url = '{0}/profiles/v2/me'.format(provider_base_url)
 
     def complete_login(self, request, app, token, response):
         extra_data = requests.get(self.profile_url, params={
